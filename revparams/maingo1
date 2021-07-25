@@ -1,0 +1,267 @@
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"os"
+)
+
+func main() {
+	info, err := ioutil.ReadAll(os.Stdin)
+	if err == nil {
+		x := 0
+		y := 0
+		che := 0
+		for _, val := range info {
+			if che == 0 {
+				x++
+			}
+			if val == '\n' {
+				if che == 0 {
+					che = 1
+				}
+				y++
+			}
+		}
+		x--
+		if x > 0 && y > 0 {
+			otvet := ""
+			count := 0
+			info1 := string(info)
+			q := QuadA(x, y)
+			if q == info1 {
+				otvet = "[quadA] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+				count = 1
+			}
+			q = QuadB(x, y)
+			if q == info1 {
+				if count == 1 {
+					otvet = otvet + " || " + "[quadB] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+
+				} else {
+					count = 1
+					otvet = "[quadB] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+
+				}
+			}
+			q = QuadC(x, y)
+			if q == info1 {
+				if count == 1 {
+					otvet = otvet + " || " + "[quadC] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+				} else {
+					count = 1
+					otvet = "[quadC] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+
+				}
+			}
+			q = QuadD(x, y)
+			if q == info1 {
+				if count == 1 {
+					otvet = otvet + " || " + "[quadD] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+				} else {
+					count = 1
+					otvet = "[quadD] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+
+				}
+			}
+			q = QuadE(x, y)
+			if q == info1 {
+				if count == 1 {
+					otvet = otvet + " || " + "[quadE] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+				} else {
+					count = 1
+					otvet = "[quadE] [" + inttostr(x) + "] [" + inttostr(y) + "]"
+
+				}
+			}
+			if otvet == "" {
+				fmt.Println("Not a Raid function")
+			} else {
+				fmt.Println(otvet)
+			}
+		} else {
+			fmt.Println("Not a Raid function")
+		}
+	} else {
+		fmt.Println("Not a Raid function")
+	}
+}
+
+func inttostr(a int) string {
+	array := []rune{}
+	checker := false
+	if a < 0 {
+		checker = true
+	}
+	if checker {
+		a *= -1
+	}
+	for a != 0 {
+		array = append(array, rune(a%10))
+		a /= 10
+	}
+	resarr := []string{}
+	for i := len(array) - 1; i >= 0; i-- {
+		resarr = append(resarr, string((array[i])+48))
+	}
+	if checker {
+		result := "-"
+		for i := 0; i < len(resarr); i++ {
+			result += resarr[i]
+		}
+		return result
+	} else {
+		result := ""
+		for i := 0; i < len(resarr); i++ {
+			result += resarr[i]
+		}
+		return result
+	}
+}
+
+func QuadE(x, y int) string {
+	res := ""
+	if x > 0 && y > 0 {
+		for i := 0; i < y; i++ {
+			for i1 := 0; i1 < x; i1++ {
+				if (i1 == 0 || i1 == x-1) && (i == 0 || i == y-1) {
+					if i1 == 0 && i == 0 {
+						res = res + string('A')
+					} else if i1 == 0 && i == y-1 {
+						res = res + string('C')
+					} else if i1 == x-1 && i == 0 {
+						res = res + string('C')
+					} else if i1 == x-1 && i == y-1 {
+						res = res + string('A')
+					}
+				} else {
+					if i == 0 || i == (y-1) {
+						res = res + string('B')
+					} else if i1 == 0 || i1 == x-1 {
+						res = res + string('B')
+					} else {
+						res = res + string(' ')
+					}
+				}
+			}
+			res = res + string('\n')
+		}
+	}
+	return res
+}
+
+func QuadD(x, y int) string {
+	res := ""
+	if x > 0 && y > 0 {
+		for i := 0; i < y; i++ {
+			for i1 := 0; i1 < x; i1++ {
+				if (i1 == 0 || i1 == x-1) && (i == 0 || i == y-1) {
+					if i1 == 0 && i == 0 {
+						res = res + string('A')
+					} else if i1 == 0 && i == y-1 {
+						res = res + string('A')
+					} else if i1 == x-1 && i == 0 {
+						res = res + string('C')
+					} else if i1 == x-1 && i == y-1 {
+						res = res + string('C')
+					}
+				} else {
+					if i == 0 || i == (y-1) {
+						res = res + string('B')
+					} else if i1 == 0 || i1 == x-1 {
+						res = res + string('B')
+					} else {
+						res = res + string(' ')
+					}
+				}
+			}
+			res = res + string('\n')
+		}
+	}
+	return res
+}
+
+func QuadC(x, y int) string {
+	res := ""
+	if x > 0 && y > 0 {
+		for i := 0; i < y; i++ {
+			for i1 := 0; i1 < x; i1++ {
+				if (i1 == 0 || i1 == x-1) && (i == 0 || i == y-1) {
+					if i1 == 0 && i == 0 {
+						res = res + string('A')
+					} else if i1 == 0 && i == y-1 {
+						res = res + string('C')
+					} else if i1 == x-1 && i == 0 {
+						res = res + string('A')
+					} else if i1 == x-1 && i == y-1 {
+						res = res + string('C')
+					}
+				} else {
+					if i == 0 || i == (y-1) {
+						res = res + string('B')
+					} else if i1 == 0 || i1 == x-1 {
+						res = res + string('B')
+					} else {
+						res = res + string(' ')
+					}
+				}
+			}
+			res = res + string('\n')
+		}
+	}
+	return res
+}
+
+func QuadB(x, y int) string {
+	res := ""
+	if x > 0 && y > 0 {
+		for i := 0; i < y; i++ {
+			for i1 := 0; i1 < x; i1++ {
+				if (i1 == 0 || i1 == x-1) && (i == 0 || i == y-1) {
+					if i1 == 0 && i == 0 {
+						res = res + string('/')
+					} else if i1 == 0 && i == y-1 {
+						res = res + string('\\')
+					} else if i1 == x-1 && i == 0 {
+						res = res + string('\\')
+					} else if i1 == x-1 && i == y-1 {
+						res = res + string('/')
+					}
+				} else {
+					if i == 0 || i == (y-1) {
+						res = res + string('*')
+					} else if i1 == 0 || i1 == x-1 {
+						res = res + string('*')
+					} else {
+						res = res + string(' ')
+					}
+				}
+			}
+			res = res + string('\n')
+		}
+	}
+	return res
+}
+
+func QuadA(x, y int) string {
+	res := ""
+	if x > 0 && y > 0 {
+		for i := 0; i < y; i++ {
+			for i1 := 0; i1 < x; i1++ {
+				if (i1 == 0 || i1 == x-1) && (i == 0 || i == y-1) {
+					res = res + "o"
+				} else {
+					if i == 0 || i == (y-1) {
+						res = res + "-"
+					} else if i1 == 0 || i1 == x-1 {
+						res = res + "|"
+					} else {
+						res = res + " "
+					}
+				}
+			}
+			res = res + "\n"
+		}
+	}
+	return res
+}

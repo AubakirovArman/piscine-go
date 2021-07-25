@@ -1,0 +1,122 @@
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/01-edu/z01"
+)
+
+var massiv = [9][9]int{}
+var ls = ".123456789"
+var list = []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+func main() {
+
+	if len(os.Args) == 10 {
+		if convertTomassiv() == true {
+			error1()
+		}
+
+		if solved() {
+			show()
+		} else {
+			error1()
+		}
+	}
+}
+func error1() {
+	for _, val := range "Error" {
+		z01.PrintRune(val)
+	}
+}
+
+func solved() bool {
+	for y := 0; y < 9; y++ {
+		for x := 0; x < 9; x++ {
+			if massiv[y][x] == 0 {
+				for _, i := range list {
+					if check(x, y, i) {
+						massiv[y][x] = i
+						if solved() {
+							return true
+						} else {
+							massiv[y][x] = 0
+						}
+					}
+				}
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func show() {
+	for y := 0; y < 9; y++ {
+		for x := 0; x < 9; x++ {
+			fmt.Print(massiv[y][x])
+			fmt.Print(" ")
+		}
+		fmt.Println()
+	}
+}
+
+func check(x, y, i int) bool {
+	return (hori(x, y, i) && ver(x, y, i)) && box(x, y, i)
+}
+
+func box(x, y, num int) bool {
+
+	for i := (y / 3) * 3; i < ((y/3)*3 + 3); i++ {
+		for j := (x / 3) * 3; j < ((x/3)*3 + 3); j++ {
+			if num == massiv[i][j] && i != y && j != x {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func ver(x, y, i int) bool {
+	for i1 := 0; i1 < 9; i1++ {
+		if i == massiv[i1][x] {
+			return false
+		}
+	}
+	return true
+}
+
+func hori(x, y, i int) bool {
+	for i1 := 0; i1 < 9; i1++ {
+		if i == massiv[y][i1] {
+			return false
+		}
+	}
+	return true
+}
+
+func convertTomassiv() bool {
+	for i := 1; i < len(os.Args); i++ {
+		for idx, val := range os.Args[i] {
+			for idx1, lit := range ls {
+				if lit == val {
+
+					massiv[i-1][idx] = idx1
+					break
+
+				}
+			}
+		}
+	}
+	for y := 0; y < 9; y++ {
+		for x := 0; x < 9; x++ {
+			i := massiv[y][x]
+			if !check(x, y, i) {
+				return false
+			}
+		}
+	}
+	return true
+
+}
